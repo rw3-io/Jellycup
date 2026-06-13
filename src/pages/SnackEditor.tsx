@@ -40,7 +40,7 @@ export default function SnackEditor() {
       const snack: Snack = {
         id: editingId,
         name: form.name.trim(),
-        category: form.category.trim() || undefined,
+        category: form.category || undefined,
         image: form.image.trim() || undefined,
         description: form.description.trim() || undefined,
       }
@@ -50,7 +50,7 @@ export default function SnackEditor() {
       const snack: Snack = {
         id: generateId(),
         name: form.name.trim(),
-        category: form.category.trim() || undefined,
+        category: form.category || undefined,
         image: form.image.trim() || undefined,
         description: form.description.trim() || undefined,
       }
@@ -122,13 +122,15 @@ export default function SnackEditor() {
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-            <input
-              type="text"
+            <select
               value={form.category}
               onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-              placeholder="e.g. Chips, Candy, Chocolate"
-              className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm"
-            />
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm bg-white"
+            >
+              <option value="">— Select —</option>
+              <option value="Sweet">Sweet</option>
+              <option value="Savoury">Savoury</option>
+            </select>
           </div>
 
           <div className="md:col-span-2">
