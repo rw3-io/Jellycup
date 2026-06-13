@@ -28,9 +28,13 @@ export default function Home() {
     <div className="flex flex-col items-center py-12 px-4">
       {/* Hero */}
       <div className="text-center mb-12">
-        <div className="text-6xl mb-4">🏆</div>
+        <img
+          src="/snack-queen.png"
+          alt="Snack Queen"
+          className="w-48 h-48 md:w-56 md:h-56 mx-auto mb-6 rounded-3xl shadow-xl object-cover"
+        />
         <h1 className="text-4xl md:text-5xl font-extrabold text-slate-800 mb-3">
-          Snacks Tournament
+          Champa's Snack Tournament
         </h1>
         <p className="text-lg text-slate-500 max-w-md mx-auto">
           Find out which snack reigns supreme! Set up groups, vote in matches, and crown the
