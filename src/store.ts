@@ -127,6 +127,13 @@ export const useTournamentStore = create<TournamentStore>()(
             m.id === matchId ? { ...m, winnerId, scoreA, scoreB } : m
           );
 
+          // Propagate winner into the next-round match that references this match's ID
+          knockoutMatches = knockoutMatches.map((m) => {
+            if (m.a === matchId) return { ...m, a: winnerId };
+            if (m.b === matchId) return { ...m, b: winnerId };
+            return m;
+          });
+
           // When both semis are done, fill in the real loser IDs on the 3rd place match
           const recordedMatch = knockoutMatches.find((m) => m.id === matchId);
           if (recordedMatch?.round === 'SF') {
