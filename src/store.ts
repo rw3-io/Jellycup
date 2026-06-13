@@ -123,9 +123,21 @@ export const useTournamentStore = create<TournamentStore>()(
           }));
 
           // Check knockout matches
-          const knockoutMatches = t.knockoutMatches.map((m) =>
+          let knockoutMatches = t.knockoutMatches.map((m) =>
             m.id === matchId ? { ...m, winnerId, scoreA, scoreB } : m
           );
+
+          // When both semis are done, fill in the real loser IDs on the 3rd place match
+          const recordedMatch = knockoutMatches.find((m) => m.id === matchId);
+          if (recordedMatch?.round === 'SF') {
+            const semis = knockoutMatches.filter((m) => m.round === 'SF');
+            if (semis.every((m) => m.winnerId)) {
+              const losers = semis.map((m) => (m.winnerId === m.a ? m.b : m.a));
+              knockoutMatches = knockoutMatches.map((m) =>
+                m.round === '3rd' ? { ...m, a: losers[0], b: losers[1] } : m
+              );
+            }
+          }
 
           return {
             tournament: {
@@ -286,6 +298,8 @@ export function isGroupStageComplete(tournament: Tournament | null): boolean {
 export function isKnockoutComplete(tournament: Tournament | null): boolean {
   if (!tournament) return false;
   const finalMatch = tournament.knockoutMatches.find((m) => m.round === 'F');
+  const thirdMatch = tournament.knockoutMatches.find((m) => m.round === '3rd');
+  if (thirdMatch) return !!finalMatch?.winnerId && !!thirdMatch.winnerId;
   return !!finalMatch?.winnerId;
 }
 
